@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div>
+        <h2>Criar Nova Postagem</h2>
+        
+        <form method="POST" action="">
+            <div>
+                <label>Título</label>
+                <input type="text" name="titulo" required>
+            </div>
+            <div>
+                <label>Conteúdo</label>
+                <textarea name="conteudo" rows="10" required></textarea>
+            </div>
+            <div>
+                <button type="submit">Publicar Postagem</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -161,6 +161,44 @@ def logout():
     flash('Você saiu da sua conta.', 'info')
     return redirect(url_for('home')) # Manda o cliente de volta para a home
 
+# --- Receita para Criar Postagem (Ação Protegida) ---
+@app.route('/criar_post', methods=['GET', 'POST'])
+@login_required # <-- O "SEGURANÇA"!
+def criar_post():
+    # @login_required: Esta é a mágica do "segurança" (Flask-Login).
+    # Se um cliente não "carimbado" (logado) tentar acessar esta URL,
+    # o Flask-Login o REDIRECIONA AUTOMATICAMENTE para a página de 'login'.
+    # O código abaixo só executa se o cliente ESTIVER logado.
+
+    # Se o cliente está ENVIANDO o formulário (POST)...
+    if request.method == 'POST':
+        # 1. Pegue os dados do formulário
+        titulo_form = request.form.get('titulo')
+        conteudo_form = request.form.get('conteudo')
+
+        # 2. Crie uma nova "Postagem" usando o "molde"
+        # AQUI ESTÁ A MÁGICA DA AUTORIA:
+        # Usamos o 'current_user' (o cliente "carimbado" que o Flask-Login nos dá)
+        # para preencher o campo 'autor' que definimos no nosso 'relacionamento'.
+        nova_postagem = Postagem(titulo=titulo_form, 
+                                 conteudo=conteudo_form, 
+                                 autor=current_user)
+        
+        # 3. Mande o "caderno" (db) "anotar" (salvar)
+        try:
+            db.session.add(nova_postagem)
+            db.session.commit()
+            flash('Postagem criada com sucesso!', 'success')
+            
+            # 4. Mande o cliente de volta para a 'home'
+            return redirect(url_for('home'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Erro ao criar postagem: {e}', 'danger')
+
+    # Se o cliente está apenas VISITANDO a página (GET)...
+    # Apenas "sirva" (renderize) a página 'criar_post.html'
+    return render_template('criar_post.html')
 
 # (Vamos adicionar a rota de Login e Home aqui)
 
