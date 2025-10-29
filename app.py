@@ -117,8 +117,15 @@ def registrar():
 @app.route('/')
 @app.route('/home')
 def home():
-    # Por enquanto, apenas "sirva" a página 'home.html'
-    return render_template('home.html')
+    # 1. LEIA O "CADERNO" (Banco de Dados):
+    # Vá até o "molde" Postagem e "pegue" (query) TUDO (all).
+    # Vamos também ordenar pela data/ID mais recente primeiro (opcional, mas legal)
+    postagens = Postagem.query.order_by(Postagem.id.desc()).all()
+
+    # 2. "Sirva" (renderize) a página 'home.html' E
+    # "ENTREGUE" (passe) a lista de 'postagens' que encontramos para o HTML.
+    # O HTML agora terá acesso a uma variável chamada 'lista_de_posts'
+    return render_template('home.html', lista_de_posts=postagens)
 
 
 # --- Receita de Login (Portaria) ---
