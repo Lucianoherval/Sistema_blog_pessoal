@@ -62,7 +62,58 @@ class Postagem(db.Model):
 # --- 4. ROTA PRINCIPAL E EXECUÇÃO ---
 
 # (Vamos adicionar nossas rotas aqui em breve)
+# --- 5. RECEITAS (Rotas) ---
 
+# --- Receita de Registro (Portaria) ---
+@app.route('/registrar', methods=['GET', 'POST'])
+def registrar():
+    # 'methods' diz que esta rota aceita tanto 'GET' (cliente visitando a página)
+    # quanto 'POST' (cliente enviando o formulário)
+
+    # Se o cliente está ENVIANDO o formulário (POST)...
+    if request.method == 'POST':
+        # 1. Pegue os dados do "pacote" (formulário)
+        nome_usuario = request.form.get('nome')
+        email_usuario = request.form.get('email')
+        senha_usuario = request.form.get('senha')
+
+        # 2. Verifique se o email já existe no "caderno"
+        usuario_existente = Usuario.query.filter_by(email=email_usuario).first()
+        if usuario_existente:
+            # Envie uma "mensagem de erro" para o "salão"
+            flash('Este email já está cadastrado. Tente outro.', 'danger')
+            return redirect(url_for('registrar')) # Mande o cliente de volta ao formulário
+
+        # 3. Se não existe, "embaralhe" a senha
+        # Isso transforma '1234' em algo como '$2b$12$E...etc'
+        senha_embaralhada = bcrypt.generate_password_hash(senha_usuario).decode('utf-8')
+
+        # 4. Crie um novo "Cliente" (Usuario) usando o "molde"
+        novo_usuario = Usuario(nome=nome_usuario, email=email_usuario, senha=senha_embaralhada)
+
+        # 5. Mande o "caderno" (db) "anotar" (salvar) este novo usuário
+        try:
+            db.session.add(novo_usuario) # Coloca na "fila de espera"
+            db.session.commit() # "Salva" permanentemente
+            
+            # Envie uma "mensagem de sucesso" para o "salão"
+            flash('Conta criada com sucesso! Por favor, faça o login.', 'success')
+            
+            # Mande o cliente para a página de 'login' (que ainda vamos criar)
+            return redirect(url_for('login')) # (Vamos criar 'login' em breve)
+
+        except Exception as e:
+            # Se der erro ao salvar (ex: o banco caiu)
+            db.session.rollback() # "Desfaz" o que estava na fila
+            flash(f'Erro ao criar conta: {e}', 'danger')
+            return redirect(url_for('registrar'))
+
+    # Se o cliente está apenas VISITANDO a página (GET)...
+    # Apenas "sirva" (renderize) a página 'registrar.html' do "salão"
+    return render_template('registrar.html')
+
+
+# (Vamos adicionar a rota de Login e Home aqui)
 
 # O "Botão de Play"
 # Isso garante que o servidor só rode quando executamos o arquivo app.py diretamente
