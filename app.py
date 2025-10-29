@@ -112,6 +112,55 @@ def registrar():
     # Apenas "sirva" (renderize) a página 'registrar.html' do "salão"
     return render_template('registrar.html')
 
+# --- Receita da Página Principal (Home) ---
+# Esta será a página principal do blog
+@app.route('/')
+@app.route('/home')
+def home():
+    # Por enquanto, apenas "sirva" a página 'home.html'
+    return render_template('home.html')
+
+
+# --- Receita de Login (Portaria) ---
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Se o cliente está ENVIANDO o formulário (POST)...
+    if request.method == 'POST':
+        # 1. Pegue os dados do formulário
+        email_form = request.form.get('email')
+        senha_form = request.form.get('senha')
+
+        # 2. Procure no "caderno" (db) se existe um usuário com esse email
+        usuario_db = Usuario.query.filter_by(email=email_form).first()
+
+        # 3. A VERIFICAÇÃO PRINCIPAL:
+        # O usuário existe E a senha que ele digitou BATE com a senha embaralhada no banco?
+        if usuario_db and bcrypt.check_password_hash(usuario_db.senha, senha_form):
+            
+            # 4. SIM! O "segurança" (Flask-Login) vai "dar o carimbo" (sessão)
+            login_user(usuario_db) 
+            
+            flash('Login feito com sucesso!', 'success')
+            
+            # 5. Mande o cliente para a 'home'
+            return redirect(url_for('home'))
+        else:
+            # 6. NÃO! Ou o email não existe ou a senha está errada
+            flash('Login falhou. Verifique seu email e senha.', 'danger')
+            return redirect(url_for('login')) # Manda de volta para a tela de login
+
+    # Se o cliente está apenas VISITANDO a página (GET)...
+    # Apenas "sirva" (renderize) a página 'login.html'
+    return render_template('login.html')
+
+
+# --- Receita de Logout (Saída) ---
+@app.route('/logout')
+def logout():
+    logout_user() # O "segurança" (Flask-Login) "apaga o carimbo"
+    flash('Você saiu da sua conta.', 'info')
+    return redirect(url_for('home')) # Manda o cliente de volta para a home
+
 
 # (Vamos adicionar a rota de Login e Home aqui)
 

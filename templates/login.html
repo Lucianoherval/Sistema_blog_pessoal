@@ -2,13 +2,9 @@
 
 {% block content %}
     <div>
-        <h2>Criar Conta</h2>
+        <h2>Fazer Login</h2>
         
         <form method="POST" action="">
-            <div>
-                <label>Nome</label>
-                <input type="text" name="nome" required>
-            </div>
             <div>
                 <label>Email</label>
                 <input type="email" name="email" required>
@@ -18,11 +14,12 @@
                 <input type="password" name="senha" required>
             </div>
             <div>
-                <button type="submit">Registrar</button>
+                <button type="submit">Entrar</button>
             </div>
         </form>
         
         <p>
-            Já tem uma conta? <a href="{{ url_for('login') }}">Faça Login</a>
+            Não tem uma conta? <a href="{{ url_for('registrar') }}">Crie uma</a>
+        </p>
     </div>
 {% endblock content %}
