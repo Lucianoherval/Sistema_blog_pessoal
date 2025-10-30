@@ -238,6 +238,48 @@ def apagar_post(post_id):
         flash(f'Erro ao apagar postagem: {e}', 'danger')
         return redirect(url_for('home'))
 
+# --- Receita para Editar Postagem (Ação Duplamente Protegida) ---
+@app.route('/post/<int:post_id>/editar', methods=['GET', 'POST'])
+@login_required # 1ª Camada: Tem que estar logado
+def editar_post(post_id):
+    
+    # Busca o post no "caderno" ou falha (erro 404)
+    post = Postagem.query.get_or_404(post_id)
+    
+    # 2ª Camada: Verificação de Autorização (dono do post)
+    if post.autor != current_user:
+        flash('Você não tem permissão para editar este post.', 'danger')
+        return redirect(url_for('home'))
+    
+    # Se o cliente está ENVIANDO o formulário (POST)...
+    if request.method == 'POST':
+        # O cliente salvou as alterações
+        
+        # 1. Pegue os novos dados do formulário
+        post.titulo = request.form.get('titulo')
+        post.conteudo = request.form.get('conteudo')
+        
+        # 2. Mande o "caderno" (db) salvar (commit) as alterações
+        # (Não precisamos de 'db.session.add()' pois o 'post' já está no caderno)
+        try:
+            db.session.commit()
+            flash('Postagem atualizada com sucesso!', 'success')
+            
+            # 3. Mande o cliente de volta para a 'home'
+            return redirect(url_for('home'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Erro ao atualizar postagem: {e}', 'danger')
+    
+    # Se o cliente está apenas VISITANDO a página (GET)...
+    elif request.method == 'GET':
+        # O cliente apenas clicou em "Editar"
+        
+        # 1. "Sirva" (renderize) a página 'editar_post.html'
+        # 2. "Entregue" (passe) o 'post' que encontramos para o HTML
+        #    (para que ele possa pré-preencher os campos)
+        return render_template('editar_post.html', post=post)
+
 # (Vamos adicionar a rota de Login e Home aqui)
 
 # O "Botão de Play"
