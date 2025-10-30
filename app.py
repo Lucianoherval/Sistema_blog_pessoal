@@ -207,6 +207,37 @@ def criar_post():
     # Apenas "sirva" (renderize) a página 'criar_post.html'
     return render_template('criar_post.html')
 
+# --- Receita para Apagar Postagem (Ação Super Protegida) ---
+# Note que a rota espera um <int:post_id> - o número do post
+@app.route('/post/<int:post_id>/apagar', methods=['POST'])
+@login_required # 1ª Camada de Segurança: O cliente DEVE estar logado.
+def apagar_post(post_id):
+    
+    # 2ª Camada de Segurança: Encontre o post no "caderno"
+    # Se o post não existir (ex: URL digitada errada), isso dará um erro 404 (Não Encontrado)
+    post_para_apagar = Postagem.query.get_or_404(post_id) 
+    
+    # 3ª Camada de Segurança (A MAIS IMPORTANTE: Autorização)
+    # Verifique se o 'autor' do post é o MESMO cliente que está 'carimbado' (current_user)
+    if post_para_apagar.autor != current_user:
+        # Se não for o dono, ABORTE a operação.
+        flash('Você não tem permissão para apagar este post.', 'danger')
+        return redirect(url_for('home'))
+
+    # Se todas as verificações passaram, o cliente é o dono.
+    try:
+        db.session.delete(post_para_apagar) # Mande o "caderno" apagar
+        db.session.commit() # Salve a mudança
+        flash('Postagem apagada com sucesso!', 'success')
+        
+        # Mande o cliente de volta para a home
+        return redirect(url_for('home'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Erro ao apagar postagem: {e}', 'danger')
+        return redirect(url_for('home'))
+
 # (Vamos adicionar a rota de Login e Home aqui)
 
 # O "Botão de Play"

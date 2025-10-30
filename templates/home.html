@@ -6,11 +6,19 @@
         {% for post in lista_de_posts %}
             
             <article style="border: 1px solid #ccc; margin-bottom: 20px; padding: 10px;">
-                <h3>{{ post.titulo }}</h3>
-                <small>Por: {{ post.autor.nome }}</small>
-                
+                <hr>
+                <h3>{{ post.titulo }}</h3>                        
                 <p>{{ post.conteudo }}</p>
-                <hr> </article>
+                <small>Por: {{ post.autor.nome }}</small>
+                {% if post.autor == current_user %}
+                    <from action="{{ url_for('apagar_post', post_id=post.id) }}" method="POST" style="display: inline;">
+                        <br>
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja apagar este post?');">
+                            Apagar
+                        </button>
+                    </from>
+                {% endif %}
+                <hr> </article> 
 
         {% else %}
             <p>Nenhuma postagem encontrada. Seja o primeiro a criar uma!</p>
