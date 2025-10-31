@@ -1,0 +1,220 @@
+/* --- 1. Fontes e Paleta de Cores (Variáveis) --- */
+/* Definir nossas "latas de tinta" primeiro */
+:root {
+    --cor-fundo: #f8f9fa; /* Cinza mais claro e limpo */
+    --cor-superficie: #ffffff; /* O branco dos 'cards' */
+    --cor-borda: #dee2e6; /* Uma borda sutil e moderna */
+    --cor-texto: #212529; /* Preto suave (melhor que #000) */
+    --cor-texto-secundario: #6c757d; /* Cinza para detalhes */
+    --cor-primaria: #0d6efd; /* Azul moderno do Bootstrap */
+    --cor-primaria-hover: #0b5ed7; /* Versão escura do azul */
+    --cor-perigo: #dc3545; /* Vermelho */
+    --cor-perigo-hover: #bb2d3b; /* Vermelho escuro */
+    --cor-editar: #6c757d; /* Cinza para o botão "Editar" */
+    --cor-editar-hover: #5a6268; /* Cinza escuro */
+
+    /* Fontes que importamos no layout.html */
+    --fonte-principal: 'Lato', sans-serif;
+    --fonte-titulos: 'Montserrat', sans-serif;
+}
+
+/* --- 2. Decoração Geral (O Ambiente) --- */
+body {
+    font-family: var(--fonte-principal);
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6; /* Espaçamento entre linhas (melhora leitura) */
+}
+
+/* --- 3. O "Contêiner" (Centraliza o conteúdo) --- */
+.container {
+    max-width: 800px;
+    margin: 0px auto; /* Mais espaçado */
+    padding: 30px; /* Mais preenchimento interno */
+    background-color: var(--cor-superficie);
+    border-radius: 8px; /* Bordas mais suaves */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra 3D sutil */
+}
+
+/* --- 4. O "Cabeçalho" (Header e Menu) --- */
+header {
+    border-bottom: 2px solid var(--cor-borda);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex; /* Alinha título e nav */
+    justify-content: space-between; /* Um em cada ponta */
+    align-items: center; /* Centraliza verticalmente */
+}
+header h1 {
+    margin: 0;
+    font-family: var(--fonte-titulos);
+}
+header h1 a {
+    text-decoration: none;
+    color: var(--cor-texto);
+}
+header nav {
+    margin-top: 0; /* Não precisa mais de margem */
+}
+header nav a {
+    text-decoration: none;
+    color: var(--cor-texto-secundario);
+    margin-left: 20px; /* Espaço entre os links */
+    font-weight: bold;
+    font-family: var(--fonte-titulos);
+    transition: color 0.2s ease; /* Efeito suave de transição */
+}
+header nav a:hover {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+/* --- 5. Títulos das Páginas (ex: "Feed Principal") --- */
+h2 {
+    font-family: var(--fonte-titulos);
+    border-bottom: 1px solid var(--cor-borda);
+    padding-bottom: 10px;
+}
+
+/* --- 6. Os "Pratos" (As Postagens) --- */
+article {
+    /* O 'style' do HTML não é mais necessário! */
+    border: 1px solid var(--cor-borda);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+article h3 {
+    font-family: var(--fonte-titulos);
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+article small {
+    color: var(--cor-texto-secundario);
+    display: block;
+    margin-bottom: 15px;
+}
+article p {
+    font-size: 1.1rem; /* Texto do post um pouco maior */
+}
+article hr {
+    /* Deixa a linha <hr> mais sutil */
+    border: 0;
+    border-top: 1px solid var(--cor-borda);
+    margin-top: 20px;
+}
+
+/* --- 7. Os "Alertas" (Mensagens Flash) --- */
+/* (Deixei suas classes de alerta como estavam, mas com cores melhores) */
+.alerta-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 15px;
+    border: 1px solid #badbcc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.alerta-danger {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 15px;
+    border: 1px solid #f5c2c7;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.alerta-info {
+    background-color: #cff4fc;
+    color: #055160;
+    padding: 15px;
+    border: 1px solid #b6effb;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+
+/* --- 8. Os "Formulários" (Login, Registro, Post) --- */
+form div {
+    margin-bottom: 20px;
+}
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-family: var(--fonte-titulos);
+}
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea {
+    width: 100%;
+    padding: 12px; /* Campos mais 'altos' */
+    box-sizing: border-box;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-family: var(--fonte-principal);
+    font-size: 1rem;
+    /* Efeito suave ao clicar no campo */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+/* Efeito de "foco" (quando o usuário clica) */
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    /* Brilho azul sutil */
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* --- 9. Os "Botões" --- */
+/* Estilo base para todos os botões e links-botão */
+button[type="submit"],
+a[href*="editar"],
+.alerta-danger + a,
+p > a[href*="criar_post"] /* Link 'Criar Post' na home vazia */
+{
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 12px 18px; /* Botões mais 'gordos' */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: var(--fonte-titulos);
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Efeito 'hover' (passar o mouse) */
+button[type="submit"]:hover,
+a[href*="editar"]:hover,
+.alerta-danger + a:hover,
+p > a[href*="criar_post"]:hover
+{
+    background-color: var(--cor-primaria-hover);
+    color: rgb(144, 143, 143); 
+    text-decoration: none;
+}
+
+/* --- 10. Botões Específicos (Cores) --- */
+
+/* Botão "Editar" (cinza) */
+a[href*="editar"] {
+    background-color: var(--cor-editar);
+    margin-right: 10px; /* Mantém o espaçamento */
+}
+a[href*="editar"]:hover {
+    background-color: var(--cor-editar-hover);
+}
+
+/* Botão de "Apagar" (vermelho) */
+form[action*="apagar"] button {
+    background-color: var(--cor-perigo);
+}
+form[action*="apagar"] button:hover {
+    background-color: var(--cor-perigo-hover);
+}
