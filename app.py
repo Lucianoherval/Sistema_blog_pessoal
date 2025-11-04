@@ -4,6 +4,11 @@ from flask_sqlalchemy import SQLAlchemy #banco de dados
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user #login e logout
 from flask_bcrypt import Bcrypt #criptografia
 import os
+# ... (outras importações do Flask)
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+# ... (outras importações, como 'db', 'bcrypt')
 
 # --- 2. CONFIGURAÇÃO (Ligar o Fogão e conectar o Caderno) ---
 
@@ -33,6 +38,12 @@ login_manager.login_message_category = 'info' # Categoria da mensagem flash (opc
 def carregar_usuario(user_id):
     return Usuario.query.get(int(user_id))
 
+
+# Função de validação customizada
+def validate_email_custom(form, field):
+    if Usuario.query.filter_by(email=field.data).first():
+        raise ValidationError('Este email já está cadastrado. Tente outro.')
+
 # Molde 1: O Usuário (Cliente)
 # UserMixin é um "kit" que já vem com as regras que o "segurança" precisa
 # (ex: is_authenticated, is_active, etc.)
@@ -59,58 +70,72 @@ class Postagem(db.Model):
     # nullable=False significa que uma postagem NÃO PODE existir sem um autor.
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
+# --- 3. MOLDES DO CADERNO (Modelos do Banco de Dados) ---
+# ... (sua classe Usuario e Postagem estão aqui) ...
+
+# --- 3.5 MOLDES DOS FORMULÁRIOS (WTForms) ---
+class FormularioRegistro(FlaskForm):
+    # O "molde" do campo 'nome'
+    nome = StringField('Nome', 
+                       validators=[DataRequired(), Length(min=2, max=100)])
+
+    # O "molde" do campo 'email'
+    email = StringField('Email',
+                        validators=[DataRequired(), Email(), validate_email_custom])
+
+    # O "molde" do campo 'senha'
+    senha = PasswordField('Senha', 
+                          validators=[DataRequired(), Length(min=6)])
+
+    # O "molde" do campo 'confirmar_senha'
+    confirmar_senha = PasswordField('Confirmar Senha',
+                                    validators=[DataRequired(), EqualTo('senha', message='As senhas não batem.')])
+
+    # O "molde" do botão
+    submit = SubmitField('Registrar')
+
 # --- 4. ROTA PRINCIPAL E EXECUÇÃO ---
 
 # (Vamos adicionar nossas rotas aqui em breve)
 # --- 5. RECEITAS (Rotas) ---
 
 # --- Receita de Registro (Portaria) ---
+# --- Receita de Registro (Portaria) ---
 @app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
-    # 'methods' diz que esta rota aceita tanto 'GET' (cliente visitando a página)
-    # quanto 'POST' (cliente enviando o formulário)
+    # 1. Crie uma "instância" do nosso molde de formulário
+    form = FormularioRegistro()
 
-    # Se o cliente está ENVIANDO o formulário (POST)...
-    if request.method == 'POST':
-        # 1. Pegue os dados do "pacote" (formulário)
-        nome_usuario = request.form.get('nome')
-        email_usuario = request.form.get('email')
-        senha_usuario = request.form.get('senha')
+    # 2. A MÁGICA: 'validate_on_submit()' faz tudo:
+    #    - Verifica se é um 'POST'
+    #    - Verifica se o token CSRF (segurança) é válido
+    #    - Roda TODOS os 'validators' que definimos (DataRequired, Email, etc.)
+    if form.validate_on_submit():
 
-        # 2. Verifique se o email já existe no "caderno"
-        usuario_existente = Usuario.query.filter_by(email=email_usuario).first()
-        if usuario_existente:
-            # Envie uma "mensagem de erro" para o "salão"
-            flash('Este email já está cadastrado. Tente outro.', 'danger')
-            return redirect(url_for('registrar')) # Mande o cliente de volta ao formulário
+        # 3. Se tudo for válido, pegue os dados "limpos"
+        nome_usuario = form.nome.data
+        email_usuario = form.email.data
 
-        # 3. Se não existe, "embaralhe" a senha
-        # Isso transforma '1234' em algo como '$2b$12$E...etc'
-        senha_embaralhada = bcrypt.generate_password_hash(senha_usuario).decode('utf-8')
+        # 4. Embaralhe a senha
+        senha_embaralhada = bcrypt.generate_password_hash(form.senha.data).decode('utf-8')
 
         # 4. Crie um novo "Cliente" (Usuario) usando o "molde"
         novo_usuario = Usuario(nome=nome_usuario, email=email_usuario, senha=senha_embaralhada)
 
-        # 5. Mande o "caderno" (db) "anotar" (salvar) este novo usuário
+        # 6. Salve no "caderno"
         try:
-            db.session.add(novo_usuario) # Coloca na "fila de espera"
-            db.session.commit() # "Salva" permanentemente
-            
-            # Envie uma "mensagem de sucesso" para o "salão"
+            db.session.add(novo_usuario)
+            db.session.commit()
             flash('Conta criada com sucesso! Por favor, faça o login.', 'success')
-            
-            # Mande o cliente para a página de 'login' (que ainda vamos criar)
-            return redirect(url_for('login')) # (Vamos criar 'login' em breve)
-
+            return redirect(url_for('login'))
         except Exception as e:
-            # Se der erro ao salvar (ex: o banco caiu)
-            db.session.rollback() # "Desfaz" o que estava na fila
+            db.session.rollback()
             flash(f'Erro ao criar conta: {e}', 'danger')
             return redirect(url_for('registrar'))
 
-    # Se o cliente está apenas VISITANDO a página (GET)...
-    # Apenas "sirva" (renderize) a página 'registrar.html' do "salão"
-    return render_template('registrar.html')
+    # 7. Se for um 'GET' ou se a validação FALHAR (ex: email já existe):
+    #    Apenas "sirva" a página, passando o 'form' (que agora contém as mensagens de erro)
+    return render_template('registrar.html', form=form)
 
 # --- Receita da Página Principal (Home) ---
 # Esta será a página principal do blog
