@@ -79,12 +79,28 @@ h2 {
 }
 
 /* --- 6. Os "Pratos" (As Postagens) --- */
+/* --- 6. Os "Pratos" (As Postagens) - Versão Cards Flutuantes --- */
 article {
-    /* O 'style' do HTML não é mais necessário! */
-    border: 1px solid var(--cor-borda);
+    background-color: #fff; /* Garante fundo branco */
+    border: none; /* Remove a borda simples */
+    border-radius: 12px; /* Cantos mais arredondados */
     padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 8px;
+    margin-bottom: 30px;
+    
+    /* A Mágica da Profundidade (Sombra inicial suave) */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    
+    /* Prepara a animação: dizemos que 'transform' e 'box-shadow' vão mudar suavemente */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* O Efeito "Hover" (Quando o mouse passa em cima) */
+article:hover {
+    /* O card "sobe" levemente (5 pixels para cima) */
+    transform: translateY(-10px);
+    
+    /* A sombra aumenta e fica mais difusa, dando a impressão de altura */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
 }
 article h3 {
     font-family: var(--fonte-titulos);
