@@ -12,13 +12,14 @@
                 <p>{{ post.conteudo }}</p>
                 
                 {% if post.autor == current_user %}
-                    <form action="{{ url_for('editar_post', post_id=post.id) }}" method="GET" style="display: inline;">
-                        <button type="submit" style="margin-right: 10px;">Editar</button>
-                    </form>
+                    
+                    <a href="{{ url_for('editar_post', post_id=post.id) }}" title="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
                     
                     <form action="{{ url_for('apagar_post', post_id=post.id) }}" method="POST" style="display: inline;">
-                        <button type="submit" onclick="return confirm('Tem certeza que deseja apagar este post?');">
-                            Apagar
+                        <button type="submit" onclick="return confirm('Tem certeza?');" title="Apagar">
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>
                 
