@@ -216,21 +216,37 @@ p > a[href*="criar_post"]:hover
     text-decoration: none;
 }
 
-/* --- 10. Botões Específicos (Cores) --- */
+/* --- 10. Botões de Ação (Ícones Modernos) --- */
 
-/* Botão "Editar" (cinza) */
+/* Regra Geral para os Ícones de Ação */
+a[href*="editar"], 
+form[action*="apagar"] button {
+    background-color: transparent; /* Fundo transparente (moderno) */
+    border: none;
+    padding: 8px 12px; /* Menor que o botão normal */
+    font-size: 1.2rem; /* Ícone um pouco maior */
+    transition: transform 0.2s ease, color 0.2s ease;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+/* Ícone Editar (Lápis) - Cor Cinza Azulado */
 a[href*="editar"] {
-    background-color: var(--cor-editar);
-    margin-right: 10px; /* Mantém o espaçamento */
+    color: #6c757d; 
 }
 a[href*="editar"]:hover {
-    background-color: var(--cor-editar-hover);
+    color: var(--cor-primaria); /* Fica azul ao passar o mouse */
+    background-color: transparent; /* Garante que não ganhe fundo */
+    transform: scale(1.2); /* Cresce um pouquinho (efeito pop) */
 }
 
-/* Botão de "Apagar" (vermelho) */
+/* Ícone Apagar (Lixeira) - Cor Vermelha Suave */
 form[action*="apagar"] button {
-    background-color: var(--cor-perigo);
+    color: #dc3545; 
 }
 form[action*="apagar"] button:hover {
-    background-color: var(--cor-perigo-hover);
+    color: #bb2d3b; /* Vermelho mais escuro */
+    background-color: transparent;
+    transform: scale(1.2); /* Cresce um pouquinho */
+    cursor: pointer;
 }
