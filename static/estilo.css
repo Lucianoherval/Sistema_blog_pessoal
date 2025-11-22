@@ -1,19 +1,30 @@
 /* --- 1. Fontes e Paleta de Cores (Variáveis) --- */
 /* Definir nossas "latas de tinta" primeiro */
+/* --- 1. Paleta de Cores "Dark Lounge" --- */
 :root {
-    --cor-fundo: #f8f9fa; /* Cinza mais claro e limpo */
-    --cor-superficie: #ffffff; /* O branco dos 'cards' */
-    --cor-borda: #dee2e6; /* Uma borda sutil e moderna */
-    --cor-texto: #212529; /* Preto suave (melhor que #000) */
-    --cor-texto-secundario: #6c757d; /* Cinza para detalhes */
-    --cor-primaria: #0d6efd; /* Azul moderno do Bootstrap */
-    --cor-primaria-hover: #0b5ed7; /* Versão escura do azul */
-    --cor-perigo: #dc3545; /* Vermelho */
-    --cor-perigo-hover: #bb2d3b; /* Vermelho escuro */
-    --cor-editar: #6c757d; /* Cinza para o botão "Editar" */
-    --cor-editar-hover: #5a6268; /* Cinza escuro */
-
-    /* Fontes que importamos no layout.html */
+    /* Fundo muito escuro (quase preto), mas suave */
+    --cor-fundo: #121212; 
+    
+    /* Os 'cards' serão um pouco mais claros que o fundo */
+    --cor-superficie: #1e1e1e; 
+    
+    /* Bordas quase invisíveis */
+    --cor-borda: #333333; 
+    
+    /* Texto principal agora é Branco/Cinza Claro */
+    --cor-texto: #e0e0e0; 
+    
+    /* Texto secundário (datas, detalhes) é cinza médio */
+    --cor-texto-secundario: #a0a0a0; 
+    
+    /* A cor de destaque (aquele AZUL CIANO da imagem) */
+    --cor-primaria: #00d4ff; 
+    --cor-primaria-hover: #00a3cc; 
+    
+    /* Vermelho para perigo, mas ajustado para o escuro */
+    --cor-perigo: #ff4d4d; 
+    
+    /* Fontes (mantemos as mesmas, que são boas) */
     --fonte-principal: 'Lato', sans-serif;
     --fonte-titulos: 'Montserrat', sans-serif;
 }
@@ -40,7 +51,7 @@ body {
 
 /* --- 4. O "Cabeçalho" (Header e Menu) --- */
 header {
-    border-bottom: 2px solid var(--cor-borda);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 20px;
     margin-bottom: 30px;
     display: flex; /* Alinha título e nav */
@@ -52,15 +63,17 @@ header h1 {
     font-family: var(--fonte-titulos);
 }
 header h1 a {
-    text-decoration: none;
-    color: var(--cor-texto);
+    color: white;
+    font-weight: 300;
+    letter-spacing: 1px;
 }
 header nav {
     margin-top: 0; /* Não precisa mais de margem */
 }
 header nav a {
     text-decoration: none;
-    color: var(--cor-texto-secundario);
+    color: var(--cor-primaria);
+    text-shadow: 0 0 1px var(--cor-primaria);
     margin-left: 20px; /* Espaço entre os links */
     font-weight: bold;
     font-family: var(--fonte-titulos);
@@ -160,19 +173,16 @@ form label {
     font-weight: bold;
     font-family: var(--fonte-titulos);
 }
+
+/* Ajuste para Inputs no Modo Escuro */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
 form textarea {
-    width: 100%;
-    padding: 12px; /* Campos mais 'altos' */
-    box-sizing: border-box;
+    background-color: #2d2d2d; /* Fundo cinza escuro */
+    color: var(--cor-texto); /* Texto claro */
     border: 1px solid var(--cor-borda);
-    border-radius: 5px;
-    font-family: var(--fonte-principal);
-    font-size: 1rem;
-    /* Efeito suave ao clicar no campo */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    /* ... o resto das regras de padding/width continua igual ... */
 }
 /* Efeito de "foco" (quando o usuário clica) */
 form input[type="text"]:focus,
@@ -232,7 +242,7 @@ form[action*="apagar"] button {
 
 /* Ícone Editar (Lápis) - Cor Cinza Azulado */
 a[href*="editar"] {
-    color: #6c757d; 
+    color: #000000; 
 }
 a[href*="editar"]:hover {
     color: var(--cor-primaria); /* Fica azul ao passar o mouse */
@@ -249,4 +259,53 @@ form[action*="apagar"] button:hover {
     background-color: transparent;
     transform: scale(1.2); /* Cresce um pouquinho */
     cursor: pointer;
+}
+
+
+/* --- 11. Estilo da Fachada (Hero Section) --- */
+.hero-section {
+    /* Coloque uma imagem de fundo aqui! */
+    /* Pode usar uma URL de imagem da internet para testar */
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 20px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra forte */
+}
+
+.hero-content h1 {
+    font-size: 3rem; /* Letra bem grande */
+    margin-bottom: 10px;
+    color: var(--cor-primaria); /* O Azul Ciano */
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 2px; /* Espaçamento entre letras */
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 30px;
+}
+
+/* Botões "Ghost" (Só o contorno, igual na imagem) */
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--cor-primaria);
+    color: var(--cor-primaria);
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 30px; /* Botão arredondado */
+    font-weight: bold;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--cor-primaria);
+    color: #000; /* Texto fica preto para contraste */
+    box-shadow: 0 0 15px var(--cor-primaria); /* Brilho neon */
 }
