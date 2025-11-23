@@ -20,7 +20,10 @@ O projeto está rodando ao vivo! Você pode testar aqui:
 
 | Tela Inicial (Dark Mode) | Área de Login |
 |:---:|:---:|
-| ![Home](https://via.placeholder.com/400x200?text=Print+da+Home) | ![Login](https://via.placeholder.com/400x200?text=Print+do+Login) |
+|<img width="1630" height="547" alt="image" src="https://github.com/user-attachments/assets/c3e3559f-55bc-4656-b687-bb8f3a3766a4" />
+>
+)<img width="914" height="482" alt="image" src="https://github.com/user-attachments/assets/b5d5bc4a-d6ef-4a76-a628-69a4b3d65029" />
+) |
 
 ---
 
@@ -62,8 +65,8 @@ Se você quiser rodar este projeto no seu computador, siga estes passos:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/SEU-USUARIO/meu_blog.git](https://github.com/Lucianoherval/Sistema_blog_pessoal)
-    cd meu_blog
+    git clone https://github.com/Lucianoherval/Sistema_blog_pessoal
+    cd Sistema_blog_pessoal
     ```
 
 2.  **Crie e ative o ambiente virtual:**
