@@ -13,7 +13,6 @@ Um sistema de blog completo desenvolvido do zero, aplicando conceitos fundamenta
 ## 🌐 Demonstração Online
 O projeto está rodando ao vivo! Você pode testar aqui:
 👉 **[Acesse o Blog Online](https://herval.pythonanywhere.com/home)**
-*(Substitua o link acima pelo seu link real do PythonAnywhere)*
 
 ---
 
