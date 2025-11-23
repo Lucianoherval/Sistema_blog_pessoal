@@ -27,7 +27,7 @@
             <article>
                 <hr>
                 <h3>{{ post.titulo }}</h3>   
-                <small>Por: {{ post.autor.nome }}</small>                     
+                <small>Por: {{ post.autor.nome }} | {{ post.data_criacao.strftime('%d/%m/%Y') }}</small>                     
                 <p>{{ post.conteudo }}</p>
                 
                 {% if post.autor == current_user %}
