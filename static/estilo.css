@@ -1,30 +1,34 @@
-/* --- 1. Fontes e Paleta de Cores (Variáveis) --- */
-/* Definir nossas "latas de tinta" primeiro */
-/* --- 1. Paleta de Cores "Dark Lounge" --- */
+/* --- 1. Paleta de Cores "Dark Lounge" (Modo Escuro) --- */
 :root {
     /* Fundo muito escuro (quase preto), mas suave */
     --cor-fundo: #121212; 
     
-    /* Os 'cards' serão um pouco mais claros que o fundo */
+    /* Os 'cards' e superfícies serão um cinza chumbo elegante */
     --cor-superficie: #1e1e1e; 
     
-    /* Bordas quase invisíveis */
+    /* Bordas quase invisíveis para separar elementos sutilmente */
     --cor-borda: #333333; 
     
-    /* Texto principal agora é Branco/Cinza Claro */
+    /* Texto principal agora é Branco Gelo (para ler no fundo preto) */
     --cor-texto: #e0e0e0; 
     
     /* Texto secundário (datas, detalhes) é cinza médio */
     --cor-texto-secundario: #a0a0a0; 
     
-    /* A cor de destaque (aquele AZUL CIANO da imagem) */
+    /* A cor de destaque (aquele AZUL CIANO NEON da imagem) */
+    /* Usaremos isso em botões, links e focos */
     --cor-primaria: #00d4ff; 
-    --cor-primaria-hover: #00a3cc; 
+    --cor-primaria-hover: #00a3cc; /* Um pouco mais escuro para o hover */
     
-    /* Vermelho para perigo, mas ajustado para o escuro */
+    /* Vermelho para perigo, mas ajustado para não "gritar" no escuro */
     --cor-perigo: #ff4d4d; 
-    
-    /* Fontes (mantemos as mesmas, que são boas) */
+    --cor-perigo-hover: #d63030;
+
+    /* Botão de Editar (Cinza) */
+    --cor-editar: #6c757d;
+    --cor-editar-hover: #adb5bd;
+
+    /* Fontes (mantemos as mesmas, pois são modernas) */
     --fonte-principal: 'Lato', sans-serif;
     --fonte-titulos: 'Montserrat', sans-serif;
 }
@@ -37,6 +41,7 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6; /* Espaçamento entre linhas (melhora leitura) */
+    align-items: center;
 }
 
 /* --- 3. O "Contêiner" (Centraliza o conteúdo) --- */
@@ -94,14 +99,15 @@ h2 {
 /* --- 6. Os "Pratos" (As Postagens) --- */
 /* --- 6. Os "Pratos" (As Postagens) - Versão Cards Flutuantes --- */
 article {
-    background-color: #fff; /* Garante fundo branco */
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto); /* Garante fundo branco */
     border: none; /* Remove a borda simples */
     border-radius: 12px; /* Cantos mais arredondados */
     padding: 25px;
     margin-bottom: 30px;
     
     /* A Mágica da Profundidade (Sombra inicial suave) */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     
     /* Prepara a animação: dizemos que 'transform' e 'box-shadow' vão mudar suavemente */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -113,7 +119,7 @@ article:hover {
     transform: translateY(-10px);
     
     /* A sombra aumenta e fica mais difusa, dando a impressão de altura */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 article h3 {
     font-family: var(--fonte-titulos);
@@ -166,33 +172,47 @@ article hr {
 /* --- 8. Os "Formulários" (Login, Registro, Post) --- */
 form div {
     margin-bottom: 20px;
+    color: var(--cor-texto);
+    align-items: center;
 }
 form label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     font-family: var(--fonte-titulos);
+
 }
 
-/* Ajuste para Inputs no Modo Escuro */
+/* Ajuste Moderno para Inputs no Modo Escuro */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
 form textarea {
-    background-color: #2d2d2d; /* Fundo cinza escuro */
-    color: var(--cor-texto); /* Texto claro */
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    
+    /* MUDANÇA AQUI: Fundo cinza escuro e texto claro */
+    background-color: #2d2d2d; 
+    color: var(--cor-texto);
+    
     border: 1px solid var(--cor-borda);
-    /* ... o resto das regras de padding/width continua igual ... */
+    border-radius: 5px;
+    font-family: var(--fonte-principal);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-/* Efeito de "foco" (quando o usuário clica) */
+
+/* Quando clica no campo (Foco) */
 form input[type="text"]:focus,
 form input[type="email"]:focus,
 form input[type="password"]:focus,
 form textarea:focus {
     outline: none;
+    /* A borda fica Ciano Neon */
     border-color: var(--cor-primaria);
-    /* Brilho azul sutil */
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    /* Um brilho neon sutil */
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); 
 }
 
 /* --- 9. Os "Botões" --- */
