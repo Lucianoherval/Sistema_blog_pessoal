@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy #banco de dados
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user #login e logout
 from flask_bcrypt import Bcrypt #criptografia
 import os
+from datetime import datetime
 # ... (outras importações do Flask)
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -64,6 +65,7 @@ class Postagem(db.Model):
     id = db.Column(db.Integer, primary_key=True) # O id unico da postagem
     titulo = db.Column(db.String(200), nullable=False) # O titulo da postagem (obrigatório)
     conteudo = db.Column(db.Text, nullable=False) # O conteudo da postagem (obrigatório)
+    data_criacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) # A data de criação da postagem
 
     # A "Chave Estrangeira" (A Conexão)
     # Diz que este campo está ligado à coluna 'id' da tabela 'usuario' (nome da tabela é minúsculo)

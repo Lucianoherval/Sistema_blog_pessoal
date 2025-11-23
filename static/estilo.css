@@ -47,9 +47,10 @@ body {
 /* --- 3. O "Contêiner" (Centraliza o conteúdo) --- */
 .container {
     max-width: 800px;
-    margin: 0px auto; /* Mais espaçado */
-    padding: 30px; /* Mais preenchimento interno */
-    background-color: var(--cor-superficie);
+    margin: 40px auto; /* Mais espaçado */
+    padding: 30px 40px; /* Mais preenchimento interno */
+    background-color: transparent;
+    text-align: right;
     border-radius: 8px; /* Bordas mais suaves */
     box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra 3D sutil */
 }
@@ -60,8 +61,10 @@ header {
     padding-bottom: 20px;
     margin-bottom: 30px;
     display: flex; /* Alinha título e nav */
-    justify-content: space-between; /* Um em cada ponta */
-    align-items: center; /* Centraliza verticalmente */
+    justify-content: left; /* Um em cada ponta */
+    align-items: left; /* Centraliza verticalmente */
+    text-align: left;
+    padding-left: 1150px;
 }
 header h1 {
     margin: 0;
@@ -175,6 +178,11 @@ form div {
     color: var(--cor-texto);
     align-items: center;
 }
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 form label {
     display: block;
     margin-bottom: 8px;
@@ -262,7 +270,7 @@ form[action*="apagar"] button {
 
 /* Ícone Editar (Lápis) - Cor Cinza Azulado */
 a[href*="editar"] {
-    color: #000000; 
+    color: #e6e1e1e3; 
 }
 a[href*="editar"]:hover {
     color: var(--cor-primaria); /* Fica azul ao passar o mouse */
